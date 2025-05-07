@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Pill } from 'lucide-react';
+import { Clock } from 'lucide-react';
 
 interface LogoProps {
   size?: 'sm' | 'md' | 'lg';
@@ -17,11 +17,11 @@ const Logo: React.FC<LogoProps> = ({ size = 'md', withText = true }) => {
   return (
     <div className="flex items-center gap-2">
       <div className={`rounded-full p-1.5 bg-primary-300 text-white`}>
-        <Pill size={sizes[size].icon} strokeWidth={2.5} />
+        <Clock size={sizes[size].icon} strokeWidth={2.5} />
       </div>
       {withText && (
         <span className={`font-bold ${sizes[size].text} bg-gradient-to-r from-primary-500 to-primary-300 text-transparent bg-clip-text`}>
-          PillPal
+          Care Clock
         </span>
       )}
     </div>

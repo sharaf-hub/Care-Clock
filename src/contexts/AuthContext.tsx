@@ -13,7 +13,7 @@ const AuthContext = createContext<AuthContextType>({
 });
 
 // User storage key
-const USER_STORAGE_KEY = 'pill-pal-user';
+const USER_STORAGE_KEY = 'care-clock-user';
 
 // Provider component
 export const AuthProvider = ({ children }: { children: ReactNode }) => {

@@ -2,7 +2,7 @@
 import { Medication } from '../types';
 import { toast } from '../components/ui/use-toast';
 
-const STORAGE_KEY = 'pill-pal-medications';
+const STORAGE_KEY = 'care-clock-medications';
 
 export const getMedications = (): Medication[] => {
   try {
