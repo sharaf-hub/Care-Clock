@@ -67,11 +67,6 @@ export const updateMedication = (id: string, updates: Partial<Medication>): Medi
     
     localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedMedications));
     
-    toast({
-      title: "Medication Updated",
-      description: `${updatedMedication.name} has been updated.`,
-    });
-    
     return updatedMedication;
   } catch (error) {
     console.error('Error updating medication:', error);

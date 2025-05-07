@@ -4,6 +4,7 @@ export interface User {
   email: string;
   name?: string;
   avatar?: string;
+  points?: number; // Added points for reward system
 }
 
 export interface Medication {
@@ -15,6 +16,8 @@ export interface Medication {
   nextDose?: string;
   createdAt: number; // timestamp
   image?: string; // base64 encoded image
+  completed?: boolean; // Track if medication has been taken
+  lastCompleted?: number; // timestamp of last completion
 }
 
 export interface AuthContextType {
@@ -24,4 +27,5 @@ export interface AuthContextType {
   loginWithGoogle: () => Promise<void>;
   register: (email: string, password: string, name: string) => Promise<void>;
   logout: () => Promise<void>;
+  updateUserPoints?: (points: number) => void; // Method to update user points
 }

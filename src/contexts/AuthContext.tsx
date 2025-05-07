@@ -1,63 +1,65 @@
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { User, AuthContextType } from '../types';
-import { toast } from '../components/ui/use-toast';
+import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
+import { User, AuthContextType } from '@/types';
 
-const AuthContext = createContext<AuthContextType | null>(null);
+// Create auth context
+const AuthContext = createContext<AuthContextType>({
+  user: null,
+  loading: true,
+  login: async () => {},
+  loginWithGoogle: async () => {},
+  register: async () => {},
+  logout: async () => {},
+});
 
-export const useAuth = (): AuthContextType => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-};
+// User storage key
+const USER_STORAGE_KEY = 'pill-pal-user';
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+// Provider component
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // Load user from storage on mount
   useEffect(() => {
-    // Check local storage for existing user session
-    const storedUser = localStorage.getItem('pill-pal-user');
-    if (storedUser) {
+    const loadUser = () => {
       try {
-        setUser(JSON.parse(storedUser));
+        const storedUser = localStorage.getItem(USER_STORAGE_KEY);
+        if (storedUser) {
+          const parsedUser = JSON.parse(storedUser);
+          setUser(parsedUser);
+        }
       } catch (error) {
-        console.error('Failed to parse stored user', error);
-        localStorage.removeItem('pill-pal-user');
+        console.error('Failed to load user from storage:', error);
+      } finally {
+        setLoading(false);
       }
-    }
-    setLoading(false);
+    };
+
+    loadUser();
   }, []);
 
-  // Mock login function for demo
-  const login = async (email: string, password: string): Promise<void> => {
+  // Mock login function
+  const login = async (email: string, password: string) => {
+    // Simulate API call
+    setLoading(true);
     try {
-      setLoading(true);
-      // In a real app, validate credentials against a backend
-      if (email && password) {
-        // Mock successful login
-        const newUser: User = {
-          id: Math.random().toString(36).substring(2, 9),
-          email,
-          name: email.split('@')[0],
-        };
-        setUser(newUser);
-        localStorage.setItem('pill-pal-user', JSON.stringify(newUser));
-        toast({
-          title: "Login successful",
-          description: "Welcome back to PillPal!",
-        });
-      } else {
-        throw new Error("Invalid credentials");
-      }
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Create mock user - in a real app this would come from your backend
+      const newUser: User = {
+        id: Math.random().toString(36).substr(2, 9),
+        email,
+        name: email.split('@')[0],
+        points: 0, // Initialize points
+      };
+      
+      // Save to local storage
+      localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(newUser));
+      setUser(newUser);
+      
     } catch (error) {
-      toast({
-        title: "Login failed",
-        description: error instanceof Error ? error.message : "Please check your credentials",
-        variant: "destructive",
-      });
+      console.error('Login failed:', error);
       throw error;
     } finally {
       setLoading(false);
@@ -65,28 +67,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   // Mock Google login
-  const loginWithGoogle = async (): Promise<void> => {
+  const loginWithGoogle = async () => {
+    setLoading(true);
     try {
-      setLoading(true);
-      // Mock successful Google login
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Create mock Google user
       const newUser: User = {
-        id: Math.random().toString(36).substring(2, 9),
-        email: `user${Math.floor(Math.random() * 1000)}@gmail.com`,
-        name: `Test User ${Math.floor(Math.random() * 100)}`,
-        avatar: `https://ui-avatars.com/api/?name=Test+User&background=9b87f5&color=fff`,
+        id: Math.random().toString(36).substr(2, 9),
+        email: 'user@example.com',
+        name: 'Demo User',
+        avatar: 'https://i.pravatar.cc/150?u=user@example.com',
+        points: 0, // Initialize points
       };
+      
+      localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(newUser));
       setUser(newUser);
-      localStorage.setItem('pill-pal-user', JSON.stringify(newUser));
-      toast({
-        title: "Google login successful",
-        description: `Welcome, ${newUser.name}!`,
-      });
+      
     } catch (error) {
-      toast({
-        title: "Google login failed",
-        description: "Could not log in with Google",
-        variant: "destructive",
-      });
+      console.error('Google login failed:', error);
       throw error;
     } finally {
       setLoading(false);
@@ -94,60 +93,69 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   // Mock register function
-  const register = async (email: string, password: string, name: string): Promise<void> => {
+  const register = async (email: string, password: string, name: string) => {
+    setLoading(true);
     try {
-      setLoading(true);
-      // In a real app, send registration to backend
-      if (email && password && name) {
-        // Mock successful registration
-        const newUser: User = {
-          id: Math.random().toString(36).substring(2, 9),
-          email,
-          name,
-        };
-        setUser(newUser);
-        localStorage.setItem('pill-pal-user', JSON.stringify(newUser));
-        toast({
-          title: "Registration successful",
-          description: "Welcome to PillPal!",
-        });
-      } else {
-        throw new Error("Please fill all required fields");
-      }
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Create mock user
+      const newUser: User = {
+        id: Math.random().toString(36).substr(2, 9),
+        email,
+        name,
+        points: 0, // Initialize points
+      };
+      
+      localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(newUser));
+      setUser(newUser);
+      
     } catch (error) {
-      toast({
-        title: "Registration failed",
-        description: error instanceof Error ? error.message : "Please check your information",
-        variant: "destructive",
-      });
+      console.error('Registration failed:', error);
       throw error;
     } finally {
       setLoading(false);
     }
   };
 
-  // Logout function
-  const logout = async (): Promise<void> => {
-    setUser(null);
-    localStorage.removeItem('pill-pal-user');
-    toast({
-      title: "Logged out",
-      description: "You've been successfully logged out",
-    });
+  // Mock logout function
+  const logout = async () => {
+    try {
+      localStorage.removeItem(USER_STORAGE_KEY);
+      setUser(null);
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  };
+
+  // Update user points
+  const updateUserPoints = (points: number) => {
+    if (user) {
+      const currentPoints = user.points || 0;
+      const updatedUser = {
+        ...user,
+        points: currentPoints + points
+      };
+      
+      // Update state and localStorage
+      setUser(updatedUser);
+      localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(updatedUser));
+    }
   };
 
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        loading,
-        login,
-        loginWithGoogle,
-        register,
-        logout,
-      }}
-    >
+    <AuthContext.Provider value={{ 
+      user, 
+      loading, 
+      login, 
+      loginWithGoogle, 
+      register, 
+      logout,
+      updateUserPoints
+    }}>
       {children}
     </AuthContext.Provider>
   );
 };
+
+// Custom hook to use auth context
+export const useAuth = () => useContext(AuthContext);

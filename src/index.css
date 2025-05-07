@@ -5,7 +5,7 @@
 
 @layer base {
   :root {
-    --background: 250 100% 99%;
+    --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
 
     --card: 0 0% 100%;
@@ -14,8 +14,8 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 255 92% 76%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 262 83% 76%;
+    --primary-foreground: 0 0% 100%;
 
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
@@ -31,9 +31,21 @@
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --ring: 262 83% 76%;
 
-    --radius: 0.75rem;
+    --radius: 0.5rem;
+
+    --primary-50: 260 100% 97.5%;
+    --primary-100: 260 100% 94%;
+    --primary-200: 261 96% 87%;
+    --primary-300: 262 86% 80%;
+    --primary-400: 262 83% 73%;
+    --primary-500: 263 70% 60%;
+    --primary-600: 263 50% 48%;
+    --primary-700: 264 53% 40%;
+    --primary-800: 264 58% 32%;
+    --primary-900: 265 62% 26%;
+    --primary-950: 267 73% 18%;
   }
 
   .dark {
@@ -71,34 +83,34 @@
   * {
     @apply border-border;
   }
-
   body {
     @apply bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-foreground;
   }
 }
 
 .pill-shadow {
-  box-shadow: 0 4px 15px rgba(155, 135, 245, 0.2);
+  box-shadow: rgba(155, 135, 245, 0.1) 0px 12px 24px -10px;
 }
 
-.ocr-overlay {
-  background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(2px);
-}
-
-.ocr-container {
-  animation: pulse 2s infinite ease-in-out;
-}
-
-@keyframes pulse {
+/* Animation for reward modal */
+@keyframes scaleIn {
   0% {
-    box-shadow: 0 0 0 0 rgba(155, 135, 245, 0.7);
+    transform: scale(0);
+    opacity: 0;
   }
   70% {
-    box-shadow: 0 0 0 10px rgba(155, 135, 245, 0);
+    transform: scale(1.2);
+    opacity: 1;
   }
   100% {
-    box-shadow: 0 0 0 0 rgba(155, 135, 245, 0);
+    transform: scale(1);
+    opacity: 1;
   }
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.5s forwards;
 }
