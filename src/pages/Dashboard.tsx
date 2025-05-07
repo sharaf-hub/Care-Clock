@@ -8,6 +8,7 @@ import Logo from '@/components/Logo';
 import OCRScanner from '@/components/OCRScanner';
 import MedicationList from '@/components/MedicationList';
 import ManualEntryForm from '@/components/ManualEntryForm';
+import ChatDrawer from '@/components/ChatDrawer';
 import { LogOut, User } from 'lucide-react';
 
 const Dashboard: React.FC = () => {
@@ -70,6 +71,9 @@ const Dashboard: React.FC = () => {
           </TabsContent>
         </Tabs>
       </main>
+
+      {/* Add the chat drawer */}
+      <ChatDrawer />
     </div>
   );
 };
