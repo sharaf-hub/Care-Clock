@@ -8,7 +8,7 @@ import Logo from '@/components/Logo';
 import OCRScanner from '@/components/OCRScanner';
 import MedicationList from '@/components/MedicationList';
 import ManualEntryForm from '@/components/ManualEntryForm';
-import { LogOut, User } from 'lucide-react';
+import { LogOut, User, Star } from 'lucide-react';
 
 const Dashboard: React.FC = () => {
   const { user, logout } = useAuth();
@@ -19,11 +19,24 @@ const Dashboard: React.FC = () => {
     navigate('/');
   };
 
+  const handleNavigateToRewards = () => {
+    navigate('/rewards');
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-primary-100">
       <header className="p-4 flex justify-between items-center border-b bg-white">
         <Logo size="md" />
         <div className="flex items-center gap-2">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="mr-2 flex items-center gap-1" 
+            onClick={handleNavigateToRewards}
+          >
+            <Star className="h-4 w-4 text-yellow-400" />
+            <span>{user?.points || 0}</span>
+          </Button>
           <div className="text-sm text-right mr-2 hidden sm:block">
             <p className="font-medium">{user?.name || 'User'}</p>
             <p className="text-muted-foreground text-xs">{user?.email}</p>
