@@ -9,17 +9,20 @@ import OCRScanner from '@/components/OCRScanner';
 import MedicationList from '@/components/MedicationList';
 import ManualEntryForm from '@/components/ManualEntryForm';
 import { LogOut, User, Star } from 'lucide-react';
+import { speak } from '@/utils/voiceNotification';
 
 const Dashboard: React.FC = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
+    speak("Logging out");
     await logout();
     navigate('/');
   };
 
   const handleNavigateToRewards = () => {
+    speak("Going to rewards page");
     navigate('/rewards');
   };
 
@@ -63,8 +66,18 @@ const Dashboard: React.FC = () => {
         
         <Tabs defaultValue="scan" className="w-full">
           <TabsList className="grid w-full grid-cols-2 mb-6">
-            <TabsTrigger value="scan">Scan Label</TabsTrigger>
-            <TabsTrigger value="medications">My Medications</TabsTrigger>
+            <TabsTrigger 
+              value="scan" 
+              onClick={() => speak("Scanning medication label")}
+            >
+              Scan Label
+            </TabsTrigger>
+            <TabsTrigger 
+              value="medications" 
+              onClick={() => speak("Viewing medications")}
+            >
+              My Medications
+            </TabsTrigger>
           </TabsList>
           <TabsContent value="scan" className="space-y-4">
             <OCRScanner />

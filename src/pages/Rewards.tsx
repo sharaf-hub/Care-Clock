@@ -7,17 +7,20 @@ import Logo from '@/components/Logo';
 import { LogOut, User, Star, Trophy, ArrowLeft } from 'lucide-react';
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { speak } from '@/utils/voiceNotification';
 
 const Rewards: React.FC = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
+    speak("Logging out");
     await logout();
     navigate('/');
   };
 
   const handleBack = () => {
+    speak("Going back to dashboard");
     navigate('/dashboard');
   };
 
